@@ -11,4 +11,3 @@ class UserController extends Controller
         return response()->json(['message' => 'Hello, Users!']);
     }
 }
->
