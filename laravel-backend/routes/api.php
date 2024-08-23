@@ -21,6 +21,7 @@ use App\Http\Controllers\Auth\LoginController;
 Route::middleware('auth:sanctum')->post('/users', [UserController::class, 'store']); // Create user
 Route::middleware('auth:sanctum')->post('/users/{id}', [UserController::class, 'update']); // Update user
 Route::middleware('auth:sanctum')->delete('/users/{id}', [UserController::class, 'destroy']); // Delete user
+Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index']); // List all users
 
 Route::middleware('auth:sanctum')->get('/orders', [OrdersController::class, 'index']);        // List all orders
 Route::middleware('auth:sanctum')->post('/orders', [OrdersController::class, 'store']);       // Create a new order

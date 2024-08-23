@@ -14,6 +14,11 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        // only admins can use this endpoint
+        if (!auth()->user()->isAdmin) {
+            return response()->json(['message' => 'You are not authorized to do this operation.'], 403);
+        }
+
         $validatedData = $request->validate([
             'email' => 'required|email|unique:users',
             'phone_number' => 'nullable|string',
@@ -34,6 +39,10 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->isAdmin) {
+            return response()->json(['message' => 'You are not authorized to do this operation.'], 403);
+        }
+
         $user = User::findOrFail($id);
 
         $validatedData = $request->validate([
@@ -58,10 +67,28 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->isAdmin) {
+            return response()->json(['message' => 'You are not authorized to do this operation.'], 403);
+        }
+
         $user = User::findOrFail($id);
 
         $user->delete();
 
         return response()->json(['message' => 'User deleted successfully'], 200);
+    }
+
+    /**
+     * Get all users.
+     */
+    public function index()
+    {
+        if (!auth()->user()->isAdmin) {
+            return response()->json(['message' => 'You are not authorized to do this operation.'], 403);
+        }
+
+        $users = User::all();
+
+        return response()->json($users, 200);
     }
 }
