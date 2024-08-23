@@ -25,4 +25,6 @@ use App\Http\Controllers\UserController;
 // });
 
 
-Route::get('/users', [UserController::class, 'index']);
+Route::post('/users', [UserController::class, 'store']); // Create user
+Route::post('/users/{id}', [UserController::class, 'update']); // Update user
+Route::delete('/users/{id}', [UserController::class, 'destroy']); // Delete user
