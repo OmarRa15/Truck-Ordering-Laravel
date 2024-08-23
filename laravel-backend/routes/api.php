@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,22 +18,16 @@ use App\Http\Controllers\OrdersController;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     // return $request->user();
-//     return response()->json([
-//         // 'user' => $request->user(),
-//         'message' => 'You are authenticated'
-//     ]);
-// });
+Route::middleware('auth:sanctum')->post('/users', [UserController::class, 'store']); // Create user
+Route::middleware('auth:sanctum')->post('/users/{id}', [UserController::class, 'update']); // Update user
+Route::middleware('auth:sanctum')->delete('/users/{id}', [UserController::class, 'destroy']); // Delete user
 
+Route::middleware('auth:sanctum')->get('/orders', [OrdersController::class, 'index']);        // List all orders
+Route::middleware('auth:sanctum')->post('/orders', [OrdersController::class, 'store']);       // Create a new order
+Route::middleware('auth:sanctum')->get('/orders/{id}', [OrdersController::class, 'show']);    // Get a single order by ID
+Route::middleware('auth:sanctum')->post('/orders/{id}', [OrdersController::class, 'update']);  // Update an existing order
+Route::middleware('auth:sanctum')->delete('/orders/{id}', [OrdersController::class, 'destroy']); // Delete an order
+Route::middleware('auth:sanctum')->get('/orders/status/{status}', [OrdersController::class, 'getOrdersByStatus']); // Get orders by status
 
-Route::post('/users', [UserController::class, 'store']); // Create user
-Route::post('/users/{id}', [UserController::class, 'update']); // Update user
-Route::delete('/users/{id}', [UserController::class, 'destroy']); // Delete user
-
-Route::get('/orders', [OrdersController::class, 'index']);        // List all orders
-Route::post('/orders', [OrdersController::class, 'store']);       // Create a new order
-Route::get('/orders/{id}', [OrdersController::class, 'show']);    // Get a single order by ID
-Route::post('/orders/{id}', [OrdersController::class, 'update']);  // Update an existing order
-Route::delete('/orders/{id}', [OrdersController::class, 'destroy']); // Delete an order
-Route::get('/orders/status/{status}', [OrdersController::class, 'getOrdersByStatus']); // Get orders by status
+Route::post('/register', [RegisterController::class, 'register']);
+Route::post('/login', [LoginController::class, 'login']);
