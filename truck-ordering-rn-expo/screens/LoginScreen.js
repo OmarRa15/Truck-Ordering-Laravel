@@ -14,7 +14,7 @@ const LoginScreen = ({ navigation }) => {
         <Image source={logo} style={styles.image} resizeMode='contain' />
         <Text style={styles.title}>Login</Text>
         <View style={styles.inputView}>
-            <TextInput style={styles.input} placeholder='EMAIL OR USERNAME' value={email} onChangeText={setEmail} autoCorrect={false}
+            <TextInput style={styles.input} placeholder='EMAIL' value={email} onChangeText={setEmail} autoCorrect={false}
         autoCapitalize='none' />
             <TextInput style={styles.input} placeholder='PASSWORD' secureTextEntry value={password} onChangeText={setPassword} autoCorrect={false}
         autoCapitalize='none'/>
@@ -22,8 +22,9 @@ const LoginScreen = ({ navigation }) => {
         <View style={styles.rememberView}>
             <View style={styles.switch}>
                 <Switch  value={click} onValueChange={setClick} trackColor={{true : "green" , false : "gray"}} />
-                <Text style={styles.rememberText}>Remember Me</Text>
+                <Text style={styles.rememberText}>Remember Me </Text>
             </View>
+
             <View>
                 <Pressable onPress={() => Alert.alert("Forget Password!")}>
                     <Text style={styles.forgetText}>Forgot Password?</Text>
@@ -37,7 +38,7 @@ const LoginScreen = ({ navigation }) => {
             </Pressable>
         </View>
         
-        <Text style={styles.footerText}>Don't Have Account?<Text style={styles.signup}>  Sign Up</Text></Text>
+        <Text style={styles.footerText}>Don't Have Account?<Text style={styles.signup} onPress={() => navigation.navigate('SignUp')}>  Sign Up</Text></Text>
 
         
     </SafeAreaView>
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
     paddingHorizontal : 50,
     justifyContent: "space-between",
     alignItems : "center",
-    flexDirection : "row",
+    flexDirection : "column",
     marginBottom : 8
   },
   switch :{
