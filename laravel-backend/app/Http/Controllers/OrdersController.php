@@ -27,7 +27,10 @@ class OrdersController extends Controller
 
         // Set the status to 'pending' by default
         $validatedData['status'] = 'pending';
-    
+        
+        // Validate the date as yyyy-mm-dd
+        $validatedData['pickup_date'] = date('Y-m-d', strtotime($validatedData['pickup_date']));
+        
         $order = Order::create($validatedData);
 
         return response()->json($order, 201);
@@ -38,7 +41,14 @@ class OrdersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $order = Order::findOrFail($id);
+        if (!is_numeric($id)) {
+            return response()->json(['message' => 'Invalid order ID'], 400);
+        }
+
+        $order = Order::find($id);
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
 
         $validatedData = $request->validate([
             'size' => 'string',
@@ -65,6 +75,11 @@ class OrdersController extends Controller
             return response()->json(['message' => 'You are not authorized to update this order'], 403);
         }
 
+        // Validate the date as yyyy-mm-dd
+        if (isset($validatedData['pickup_date'])) {
+            $validatedData['pickup_date'] = date('Y-m-d', strtotime($validatedData['pickup_date']));
+        }
+
         $order->update($validatedData);
 
         return response()->json($order, 200);
@@ -75,7 +90,14 @@ class OrdersController extends Controller
      */
     public function destroy($id)
     {
-        $order = Order::findOrFail($id);
+        if (!is_numeric($id)) {
+            return response()->json(['message' => 'Invalid order ID'], 400);
+        }
+
+        $order = Order::find($id);
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
 
         // Normal users can only delete their own orders if they are pending
         if (!auth()->user()->isAdmin) {
@@ -109,7 +131,15 @@ class OrdersController extends Controller
 
     public function show($id)
     {
-        $order = Order::findOrFail($id);
+        if (!is_numeric($id)) {
+            return response()->json(['message' => 'Invalid order ID'], 400);
+        }
+
+        $order = Order::find($id);
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
         // Normal users can only view their own orders
         if (!auth()->user()->isAdmin && $order->user_id !== auth()->user()->id) {
             return response()->json(['message' => 'You are not authorized to view this order'], 403);

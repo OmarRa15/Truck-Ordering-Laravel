@@ -43,7 +43,14 @@ class UserController extends Controller
             return response()->json(['message' => 'You are not authorized to do this operation.'], 403);
         }
 
-        $user = User::findOrFail($id);
+        if (!is_numeric($id)) {
+            return response()->json(['message' => 'Invalid user ID'], 400);
+        }
+
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
 
         $validatedData = $request->validate([
             'email' => 'email|unique:users,email,' . $user->id,
@@ -71,8 +78,15 @@ class UserController extends Controller
             return response()->json(['message' => 'You are not authorized to do this operation.'], 403);
         }
 
-        $user = User::findOrFail($id);
+        if (!is_numeric($id)) {
+            return response()->json(['message' => 'Invalid user ID'], 400);
+        }
 
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+        
         $user->delete();
 
         return response()->json(['message' => 'User deleted successfully'], 200);
