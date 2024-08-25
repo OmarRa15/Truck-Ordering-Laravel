@@ -34,11 +34,10 @@ const SignUpScreen = ({ navigation }) => {
           password_confirmation: confirmPassword.trim(),
           name: name.trim(),
           phone_number: phone.trim()
-        });
-  
-        // Handle successful signup (e.g., navigate to a login or home screen)
-        // console.log('Sign up successful', response.data);
+        });  
+      
         navigation.navigate('Login');
+      
       } catch (error) {
         // Handle errors from the server
         if (error.response) {

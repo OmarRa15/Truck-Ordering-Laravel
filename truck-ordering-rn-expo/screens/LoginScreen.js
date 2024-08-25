@@ -1,13 +1,30 @@
 import React, { useState } from 'react'
 import { Alert, Button, Image, Pressable, SafeAreaView, StyleSheet, Switch, Text, TextInput, View } from 'react-native'
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const logo = require("../assets/logo.png")
 
 // Credit for: mustapha.aitigunaoun@gmail.com 
 
 const LoginScreen = ({ navigation }) => {
     const [click,setClick] = useState(false);
-    const {email,setEmail}=  useState("");
-    const {password,setPassword}=  useState("");
+    const [email,setEmail]=  useState("");
+    const [password,setPassword]=  useState("");
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleLogin = async () => {
+      // Alert.alert('email: ' + email + ' password: ' + password);
+      const response = await loginUser(email, password);
+      
+      if (response.success) {
+        // navigate to the home screen
+        navigation.navigate('Home');
+      } else {
+        setErrorMessage(response.message);
+      }
+    };
+  
   return (
     <SafeAreaView style={styles.container}>
         
@@ -31,13 +48,13 @@ const LoginScreen = ({ navigation }) => {
                 </Pressable>
             </View>
         </View>
-
+        {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}        
         <View style={styles.buttonView}>
-            <Pressable style={styles.button} onPress={() => Alert.alert("Login Successfuly!","")}>
+            <Pressable style={styles.button} onPress={handleLogin}>
                 <Text style={styles.buttonText}>LOGIN</Text>
             </Pressable>
         </View>
-        
+
         <Text style={styles.footerText}>Don't Have Account?<Text style={styles.signup} onPress={() => navigation.navigate('SignUp')}>  Sign Up</Text></Text>
 
         
@@ -141,7 +158,41 @@ const styles = StyleSheet.create({
   signup : {
     color : "red",
     fontSize : 13
-  }
+  },
+  error: {
+    color: 'red',
+    marginTop: 10,
+  },
 })
+
+const loginUser = async (email, password) => {
+  try {
+    // Alert.alert('email: ' + email + ' password: ' + password);
+    const response = await axios.post('http://192.168.117.162:8000/api/login', {
+      email: email,
+      password: password,
+    });
+    
+    // Assuming the response contains the token and user data
+    const { token, user } = response.data;
+    
+    // Store the token securely (e.g., in AsyncStorage)
+    await AsyncStorage.setItem('userToken', token);
+    
+    return { success: true, user };
+  } catch (error) {
+// Check if error.response exists
+if (error.response) {
+  // The request was made, and the server responded with a status code outside the range of 2xx
+  return { success: false, message: error.response.data.message };
+} else if (error.request) {
+  // The request was made, but no response was received
+  return { success: false, message: 'No response received from the server. Please try again.' };
+} else {
+  // Something else happened while setting up the request
+  return { success: false, message: `Request error: ${error.message}` };
+}  }
+};
+
 
 export default LoginScreen;
