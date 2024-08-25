@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Alert, Image, Pressable, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Image, Pressable, StyleSheet, Text, TextInput, View, ScrollView } from 'react-native'
 import axios from 'axios';
 
 
@@ -49,7 +49,7 @@ const SignUpScreen = ({ navigation }) => {
     };
   
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
         
         <Image source={logo} style={styles.image} resizeMode='contain' />
         <Text style={styles.title}>Sign Up</Text>
@@ -75,7 +75,7 @@ const SignUpScreen = ({ navigation }) => {
         <Text style={styles.footerText}>Already Have Account? <Text style={styles.signup} onPress={() => navigation.navigate('Login')}>Log in</Text></Text>
 
         
-    </SafeAreaView>
+    </ScrollView>
   )
 }
 

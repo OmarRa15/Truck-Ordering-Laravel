@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Alert, Button, Image, Pressable, SafeAreaView, StyleSheet, Switch, Text, TextInput, View } from 'react-native'
+import { Alert, ScrollView, Image, Pressable, StyleSheet, Switch, Text, TextInput, View } from 'react-native'
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -18,14 +18,14 @@ const LoginScreen = ({ navigation }) => {
       
       if (response.success) {
         // navigate to the appropriate dashboard based on the user's role
-        response.user.isAdmin ? navigation.navigate('AdminDashboard') : navigation.navigate('UserDashboard');
+        response.user.isAdmin ? navigation.navigate('AdminDashboard') : navigation.navigate('OrderCreate');
       } else {
         setErrorMessage(response.message);
       }
     };
   
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
         
         <Image source={logo} style={styles.image} resizeMode='contain' />
         <Text style={styles.title}>Login</Text>
@@ -57,7 +57,7 @@ const LoginScreen = ({ navigation }) => {
         <Text style={styles.footerText}>Don't Have Account?<Text style={styles.signup} onPress={() => navigation.navigate('SignUp')}>  Sign Up</Text></Text>
 
         
-    </SafeAreaView>
+    </ScrollView>
   )
 }
 
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
 const loginUser = async (email, password) => {
   try {
     // Alert.alert('email: ' + email + ' password: ' + password);
-    const response = await axios.post('http://192.168.117.162:8000/api/login', {
+    const response = await axios.post('http://192.168.8.18:8000/api/login', {
       email: email,
       password: password,
     });

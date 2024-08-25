@@ -7,6 +7,7 @@ import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import AdminDashboard from './screens/AdminDashboardScreen';
 import UserDashboard from './screens/UserDashboardScreen';
+import OrderCreate from './screens/OrderScreen';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ function App() {
         <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name="AdminDashboard" component={AdminDashboard} />
         <Stack.Screen name="UserDashboard" component={UserDashboard} />
+        <Stack.Screen name="OrderCreate" component={OrderCreate} />
 
       </Stack.Navigator>
     </NavigationContainer>

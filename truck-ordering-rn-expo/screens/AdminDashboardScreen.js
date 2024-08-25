@@ -13,8 +13,6 @@ const AdminDashboard = ({navigation}) => {
   
   return (
 
-    // A logout button:
-    // <View style={styles.buttonView}> </View>
     
 
 
