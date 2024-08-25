@@ -1,17 +1,54 @@
 import React, { useState } from 'react'
-import { Alert, Button, Image, Pressable, SafeAreaView, StyleSheet, Switch, Text, TextInput, View } from 'react-native'
+import { Alert, Image, Pressable, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native'
+import axios from 'axios';
+
+
 const logo = require("../assets/logo.png")
 
 // Credit for: mustapha.aitigunaoun@gmail.com 
 
 const SignUpScreen = ({ navigation }) => {
-    const [click,setClick] = useState(false);
-    const {name,setName}=  useState("");
-    const {email,setEmail}=  useState("");
-    const {phone,setPhone}=  useState("");
-    const {password,setPassword}=  useState("");
-    const {confirmPassword,setConfirmPassword}=  useState("");
-
+    const [name,setName]=  useState("");
+    const [email,setEmail]=  useState("");
+    const [phone,setPhone]=  useState("");
+    const [password,setPassword]=  useState("");
+    const [confirmPassword,setConfirmPassword]=  useState("");
+    const [errorMessage,setErrorMessage]=  useState("");
+    
+    const handleSignUp = async () => {
+      // Simple form validation
+      if (!email || !password || !confirmPassword || !name || !phone) {
+        setErrorMessage('All fields are required.');
+        return;
+      }
+  
+      if (password !== confirmPassword) {
+        setErrorMessage('Passwords do not match.');
+        return;
+      }
+  
+      try {
+        const response = await axios.post('http://192.168.117.162:8000/api/register', {
+          email: email.trim(),
+          password: password.trim(),
+          password_confirmation: confirmPassword.trim(),
+          name: name.trim(),
+          phone_number: phone.trim()
+        });
+  
+        // Handle successful signup (e.g., navigate to a login or home screen)
+        // console.log('Sign up successful', response.data);
+        navigation.navigate('Login');
+      } catch (error) {
+        // Handle errors from the server
+        if (error.response) {
+          setErrorMessage(error.response.data.message);
+        } else {
+          setErrorMessage('An unexpected error occurred: ' + error.message);
+        }
+      }
+    };
+  
   return (
     <SafeAreaView style={styles.container}>
         
@@ -29,13 +66,13 @@ const SignUpScreen = ({ navigation }) => {
         autoCapitalize='none' />
 
         </View>
-
+        {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}        
         <View style={styles.buttonView}>
-            <Pressable style={styles.button} onPress={() => Alert.alert("SignUp Successfull!","")}>
+            <Pressable style={styles.button} onPress={handleSignUp}>
                 <Text style={styles.buttonText}>SIGN UP</Text>
             </Pressable>
         </View>
-        
+
         <Text style={styles.footerText}>Already Have Account? <Text style={styles.signup} onPress={() => navigation.navigate('Login')}>Log in</Text></Text>
 
         
@@ -100,7 +137,11 @@ const styles = StyleSheet.create({
   signup : {
     color : "red",
     fontSize : 13
-  }
+  },
+  error: {
+    color: 'red',
+    marginTop: 10,
+  },
 })
 
 export default SignUpScreen;
