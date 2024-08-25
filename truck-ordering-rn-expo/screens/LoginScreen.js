@@ -14,12 +14,11 @@ const LoginScreen = ({ navigation }) => {
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleLogin = async () => {
-      // Alert.alert('email: ' + email + ' password: ' + password);
       const response = await loginUser(email, password);
       
       if (response.success) {
-        // navigate to the home screen
-        navigation.navigate('Home');
+        // navigate to the appropriate dashboard based on the user's role
+        response.user.isAdmin ? navigation.navigate('AdminDashboard') : navigation.navigate('UserDashboard');
       } else {
         setErrorMessage(response.message);
       }
@@ -178,6 +177,7 @@ const loginUser = async (email, password) => {
     
     // Store the token securely (e.g., in AsyncStorage)
     await AsyncStorage.setItem('userToken', token);
+    await AsyncStorage.setItem('userData', JSON.stringify(user));
     
     return { success: true, user };
   } catch (error) {
