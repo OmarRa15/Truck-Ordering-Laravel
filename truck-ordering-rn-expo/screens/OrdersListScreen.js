@@ -1,52 +1,72 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, FlatList, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import api from '../api';
-
 
 const OrdersListScreen = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
-    fetchOrders();
+    fetchOrders(); // Fetch the first page of orders on component mount
   }, []);
 
-  const fetchOrders = async () => {
-    try {
+  const fetchOrders = async (page = 1) => {
+    // Handle loading state separately for initial load and pagination
+    if (page === 1) setLoading(true);
+    else setIsFetchingMore(true);
 
+    try {
       const userToken = await AsyncStorage.getItem('userToken');
 
-      const response = await api.get('/orders', {
+      const response = await api.get(`/orders?page=${page}`, {
         headers: {
           'Authorization': `Bearer ${userToken}`,
         },
       });
+      const data = response.data;
 
-      setOrders(response.data);
+      if (page === 1) {
+        setOrders(data.data); // Set orders for the first page
+      } else {
+        setOrders(prevOrders => [...prevOrders, ...data.data]); // Append orders for pagination
+      }
+      
+      setCurrentPage(data.current_page);
+      setLastPage(data.last_page);
     } catch (error) {
-        if (error.response) {
-            setErrorMessage(error.response.data.message);
-        } else {
-            setErrorMessage('An unexpected error occurred: ' + error.message);
-        }
-        
+      if (error.response) {
+        setErrorMessage(error.response.data.message);
+      } else {
+        setErrorMessage('An unexpected error occurred: ' + error.message);
+      }
     } finally {
-      setLoading(false);
+      // Clear the loading state after the request completes
+      if (page === 1) setLoading(false);
+      setIsFetchingMore(false);
     }
   };
 
-  const renderOrder = ({ item: order }) => (
+  const loadMoreOrders = () => {
+    if (currentPage < lastPage && !isFetchingMore) {
+      fetchOrders(currentPage + 1);
+    }
+  };
+
+  const renderOrder = useCallback(({ item: order }) => (
     <View style={styles.itemContainer}>
-      <Text style={styles.itemName}>{order.destination_location}</Text>
+      <Text style={styles.itemName}>{order.pickup_location} {'==>'} {order.destination_location}</Text>
       <Text style={[styles.itemStatus, order.status !== 'pending' ? styles.active : styles.inactive]}>
         {order.status}
       </Text>
     </View>
-  );
+  ), []);
 
-  if (loading) {
+  if (loading && currentPage === 1) {
     return (
       <View style={styles.loaderContainer}>
         <ActivityIndicator size="large" color="#0000ff" />
@@ -56,13 +76,17 @@ const OrdersListScreen = () => {
 
   return (
     <View style={styles.container}>
-
-        <FlatList
-        data={orders} 
-        keyExtractor={(order)=> order.id.toString()} // Fallback for missing `id`
+      <FlatList
+        data={orders}
+        keyExtractor={(order) => order.id.toString()}
         renderItem={renderOrder}
-        />
-        
+        onEndReached={loadMoreOrders}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={isFetchingMore ? <ActivityIndicator size="large" color="#0000ff" /> : null}
+        initialNumToRender={10}
+        removeClippedSubviews={true}
+      />
+      {errorMessage && Alert.alert('Error', errorMessage)}
     </View>
   );
 };

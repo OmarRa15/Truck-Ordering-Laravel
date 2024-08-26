@@ -116,12 +116,13 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        $orders = Order::all();
-        
-        // If the user is not an admin, only return their orders
-        if (!auth()->user()->isAdmin) {
-            $orders = $orders->where('user_id', auth()->user()->id)->values();
+        if (auth()->user()->isAdmin) {
+            $orders = Order::paginate(10); 
+        } else {
+            // If the user is not an admin, only retrieve their orders 
+            $orders = Order::where('user_id', auth()->user()->id)->paginate(10); 
         }
+
         return response()->json($orders, 200);
     }
 
