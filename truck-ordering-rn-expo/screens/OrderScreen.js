@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { StyleSheet, Text, View, Pressable, TextInput,ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RadioButton } from 'react-native-paper';
-import axios from 'axios';
+import api from '../api';
 
 const OrderCreate = ({navigation}) => {
 
@@ -33,7 +33,7 @@ const OrderCreate = ({navigation}) => {
           // get the user token from the async storage
           const userToken = await AsyncStorage.getItem('userToken');
 
-            const response = await axios.post('http://192.168.8.18:8000/api/orders', {
+            const response = await api.post('/orders', {
                 size: size.trim(),
                 weight: weight.trim(),
                 pickup_location: pickup_location.trim(),

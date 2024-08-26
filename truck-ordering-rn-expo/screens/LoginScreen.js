@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Alert, ScrollView, Image, Pressable, StyleSheet, Switch, Text, TextInput, View } from 'react-native'
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from '../api';
 
 const logo = require("../assets/logo.png")
 
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
 const loginUser = async (email, password) => {
   try {
     // Alert.alert('email: ' + email + ' password: ' + password);
-    const response = await axios.post('http://192.168.8.18:8000/api/login', {
+    const response = await api.post('/login', {
       email: email,
       password: password,
     });

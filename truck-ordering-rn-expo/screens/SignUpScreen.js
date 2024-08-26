@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Image, Pressable, StyleSheet, Text, TextInput, View, ScrollView } from 'react-native'
-import axios from 'axios';
+import api from '../api';
 
 
 const logo = require("../assets/logo.png")
@@ -28,7 +28,7 @@ const SignUpScreen = ({ navigation }) => {
       }
   
       try {
-        const response = await axios.post('http://192.168.117.162:8000/api/register', {
+        const response = await axios.api('/register', {
           email: email.trim(),
           password: password.trim(),
           password_confirmation: confirmPassword.trim(),
