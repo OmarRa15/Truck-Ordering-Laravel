@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Pressable,Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const UserDashboard = ({navigation}) => {
@@ -12,11 +12,12 @@ const UserDashboard = ({navigation}) => {
 
     return (
     <View style={styles.container}>
-
-    {/* <Pressable style={styles.button} onPress={logoutUser}> 
-        <Text style={styles.buttonText}>LOGOUT</Text>
-    </Pressable> */}
-
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Orders</Text>
+        <Button title="Logout" onPress={logoutUser} />
+      </View>
+      
+    <View style={styles.buttonGroup}>
     <View style={styles.buttonView}>
         <Pressable style={styles.button} onPress={() => {navigation.navigate('OrdersListUser')}}>
             <Text style={styles.buttonText}>List Your Orders</Text>
@@ -29,15 +30,20 @@ const UserDashboard = ({navigation}) => {
         </Pressable>
     </View>
     </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#f5fcff',
+  },
+  buttonGroup : {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5fcff',
+    flex: 1,
+
   },
   text: {
     fontSize: 24,
@@ -59,6 +65,22 @@ const styles = StyleSheet.create({
     color : "white"  ,
     fontSize: 18,
     fontWeight : "bold"
+  },
+  header: {
+    marginTop: 30,
+    height: 60,
+    backgroundColor: '#f8f9fa',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+    elevation: 2, // Adds shadow for Android
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
 

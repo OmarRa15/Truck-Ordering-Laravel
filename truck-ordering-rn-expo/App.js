@@ -22,8 +22,8 @@ function App() {
 
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
-        <Stack.Screen name="AdminDashboard" component={AdminDashboard} />
-        <Stack.Screen name="UserDashboard" component={UserDashboard} />
+        <Stack.Screen name="AdminDashboard" component={AdminDashboard} options={{ headerShown: false}} />
+        <Stack.Screen name="UserDashboard" component={UserDashboard} options={{ headerShown: false}} />
         <Stack.Screen name="OrderCreate" component={OrderCreate} />
         <Stack.Screen name="OrdersListUser" component={OrdersListScreen} />
 
