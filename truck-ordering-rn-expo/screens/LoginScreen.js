@@ -18,7 +18,7 @@ const LoginScreen = ({ navigation }) => {
       
       if (response.success) {
         // navigate to the appropriate dashboard based on the user's role
-        response.user.isAdmin ? navigation.navigate('AdminDashboard') : navigation.navigate('OrderCreate');
+        response.user.isAdmin ? navigation.navigate('AdminDashboard') : navigation.navigate('UserDashboard');
       } else {
         setErrorMessage(response.message);
       }

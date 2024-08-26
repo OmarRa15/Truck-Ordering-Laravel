@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState } from 'react'
-import { StyleSheet, Text, View, Pressable, TextInput,ScrollView} from 'react-native';
+import { StyleSheet, Text, View, Pressable, TextInput,ScrollView, Button} from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RadioButton } from 'react-native-paper';
 import api from '../api';
@@ -19,9 +21,17 @@ const OrderCreate = ({navigation}) => {
     const [pickup_location,setPickup_location]=  useState("");
     const [destination_location,setDestination_location]=  useState("");
     const [delivery_type,setDelivery_type]=  useState("");
-    const [pickup_date,setPickup_date]=  useState("");
+    const [pickup_date,setPickup_date]=  useState(new Date());
     const [errorMessage,setErrorMessage]=  useState("");
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
+    const onDateChange = (event, selectedDate) => {
+      const currentDate = selectedDate || date;
+      setShowDatePicker(false); // Close the picker after a date is selected
+      setPickup_date(currentDate); // Set the selected date
+    };
+
+    
     const handleOrderCreate = async () => {
         // Simple form validation
         if (!size || !weight || !pickup_location || !pickup_date || !destination_location || !delivery_type ) {
@@ -37,7 +47,7 @@ const OrderCreate = ({navigation}) => {
                 size: size.trim(),
                 weight: weight.trim(),
                 pickup_location: pickup_location.trim(),
-                pickup_date: pickup_date.trim(),
+                pickup_date: pickup_date,
                 destination_location: destination_location.trim(),
                 delivery_type: delivery_type.trim(),
             },
@@ -50,7 +60,7 @@ const OrderCreate = ({navigation}) => {
             );
             // if the response code is 201, then the order was created successfully
             if (response.status === 201) {
-                navigation.navigate('AdminDashboard');
+                navigation.navigate('OrdersListUser');
             } else {
                 setErrorMessage('An unexpected error occurred here.'+ response.data.message);
             }
@@ -78,8 +88,6 @@ const OrderCreate = ({navigation}) => {
             <TextInput style={styles.input} placeholder='Wieght (Kg)' keyboardType="numeric" value={weight} onChangeText={setWeight} autoCorrect={false}
         autoCapitalize='none' />
             <TextInput style={styles.input} placeholder='Pickup Location' value={pickup_location} onChangeText={setPickup_location} autoCorrect={false}/>
-            <TextInput style={styles.input} placeholder='Pickup Date' value={pickup_date} onChangeText={setPickup_date} autoCorrect={false}
-        autoCapitalize='none' />
             <TextInput style={styles.input} placeholder='Destination Location' value={destination_location} onChangeText={setDestination_location} autoCorrect={false}
         autoCapitalize='none' />
             
@@ -96,6 +104,18 @@ const OrderCreate = ({navigation}) => {
                 </View>
             </RadioButton.Group>
 
+            <Button onPress={()=>{setShowDatePicker(true)}} title="Select Date" style={styles.secondary_button} />
+      <Text>Selected Date: {pickup_date.toDateString()}</Text>
+
+      {showDatePicker && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={pickup_date}
+          mode="date"
+          display="default"
+          onChange={onDateChange}
+        />
+      )}
         </View>
         {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}        
         <View style={styles.buttonView}>
@@ -178,7 +198,6 @@ const styles = StyleSheet.create({
       radioLabel: {
         fontSize: 16,
       },
-
     });
 
 export default OrderCreate;

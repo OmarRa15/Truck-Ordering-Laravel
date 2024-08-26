@@ -8,6 +8,7 @@ import SignUpScreen from './screens/SignUpScreen';
 import AdminDashboard from './screens/AdminDashboardScreen';
 import UserDashboard from './screens/UserDashboardScreen';
 import OrderCreate from './screens/OrderScreen';
+import OrdersListScreen from './screens/OrdersListScreen';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,7 @@ function App() {
         <Stack.Screen name="AdminDashboard" component={AdminDashboard} />
         <Stack.Screen name="UserDashboard" component={UserDashboard} />
         <Stack.Screen name="OrderCreate" component={OrderCreate} />
+        <Stack.Screen name="OrdersListUser" component={OrdersListScreen} />
 
       </Stack.Navigator>
     </NavigationContainer>
