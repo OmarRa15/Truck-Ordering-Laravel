@@ -117,10 +117,10 @@ class OrdersController extends Controller
     public function index()
     {
         if (auth()->user()->isAdmin) {
-            $orders = Order::paginate(10); 
+            $orders = Order::with('user')->paginate(10);
         } else {
             // If the user is not an admin, only retrieve their orders 
-            $orders = Order::where('user_id', auth()->user()->id)->paginate(10); 
+            $orders = Order::with('user')->where('user_id', auth()->user()->id)->paginate(10); 
         }
 
         return response()->json($orders, 200);
@@ -136,7 +136,7 @@ class OrdersController extends Controller
             return response()->json(['message' => 'Invalid order ID'], 400);
         }
 
-        $order = Order::find($id);
+        $order = Order::with('user')->find($id);
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }

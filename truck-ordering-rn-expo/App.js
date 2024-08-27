@@ -5,10 +5,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
-import AdminDashboard from './screens/AdminDashboardScreen';
+import AdminOrdersList from './screens/AdminDashboardScreen';
 import UserDashboard from './screens/UserDashboardScreen';
 import OrderCreate from './screens/OrderScreen';
 import OrdersListScreen from './screens/OrdersListScreen';
+import OrderDetailsScreen from './screens/OrderInfoScreen';
 
 const Stack = createStackNavigator();
 
@@ -22,10 +23,12 @@ function App() {
 
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
-        <Stack.Screen name="AdminDashboard" component={AdminDashboard} options={{ headerShown: false}} />
+        <Stack.Screen name="AdminDashboard" component={AdminOrdersList} options={{ headerShown: false}} />
         <Stack.Screen name="UserDashboard" component={UserDashboard} options={{ headerShown: false}} />
         <Stack.Screen name="OrderCreate" component={OrderCreate} />
         <Stack.Screen name="OrdersListUser" component={OrdersListScreen} />
+        <Stack.Screen name="OrderDetails" component={OrderDetailsScreen} />
+        
 
       </Stack.Navigator>
     </NavigationContainer>
