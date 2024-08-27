@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Linking } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../api';
-import { Picker } from '@react-native-picker/picker'
 
-const OrderDetailsScreen = ({ route, navigation }) => {
+const OrderDetailsUser = ({ route, navigation }) => {
   const [order, setOrder] = useState(null);
-  const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -27,28 +25,10 @@ const OrderDetailsScreen = ({ route, navigation }) => {
         },
       });
       setOrder(response.data);
-      setStatus(response.data.status);
       setLoading(false);
     } catch (error) {
        setErrorMessage('An unexpected error occurred: ' + error.message);
       setLoading(false);
-    }
-  };
-
-  const updateStatus = async () => {
-    try {
-      const userToken = await AsyncStorage.getItem('userToken');
-      await api.post(`/orders/${orderId}`,
-         { 'status': status }, 
-         {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${userToken}`,
-            }
-         });
-        navigation.navigate('AdminDashboard');
-    } catch (error) {
-        setErrorMessage('An unexpected error occurred: ' + error.message);
     }
   };
 
@@ -83,22 +63,6 @@ const OrderDetailsScreen = ({ route, navigation }) => {
       <Text style={styles.label}>Delivery Type: <Text style={styles.value}>{order.delivery_type}</Text></Text>
       <Text style={styles.label}>Status: <Text style={styles.value}>{order.status}</Text></Text>
 
-      <View style={styles.statusContainer}>
-        <Text style={styles.label}>Update Status:</Text>
-        <Picker
-          selectedValue={status}
-          onValueChange={(itemValue) => setStatus(itemValue)}
-          style={styles.picker}
-        >
-          <Picker.Item label="Pending" value="pending" />
-          <Picker.Item label="In Progress" value="in progress" />
-          <Picker.Item label="Delivered" value="delivered" />
-        </Picker>
-      </View>
-
-      <TouchableOpacity style={styles.button} onPress={updateStatus}>
-        <Text style={styles.buttonText}>Update Status</Text>
-      </TouchableOpacity>
       {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}        
 
     </View>
@@ -164,4 +128,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default OrderDetailsScreen;
+export default OrderDetailsUser;

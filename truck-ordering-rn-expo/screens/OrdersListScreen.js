@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, FlatList, StyleSheet, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, FlatList, StyleSheet, ActivityIndicator, Alert,TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../api';
 
-const OrdersListScreen = () => {
+const OrdersListScreen = ({navigation}) => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
@@ -58,14 +58,19 @@ const OrdersListScreen = () => {
   };
 
   const renderOrder = useCallback(({ item: order }) => (
-    <View style={styles.itemContainer}>
-      <Text style={styles.itemName}>{order.pickup_location} {'==>'} {order.destination_location}</Text>
+    <TouchableOpacity
+      style={styles.itemContainer}
+      onPress={() => navigation.navigate('OrderDetailsUser', { orderId: order.id })} // Pass orderId as route param
+    >
+      <Text style={styles.itemName}>
+        {order.pickup_location} {'==>'} {order.destination_location}
+      </Text>
       <Text style={[styles.itemStatus, order.status !== 'pending' ? styles.active : styles.inactive]}>
         {order.status}
       </Text>
-    </View>
-  ), []);
-
+    </TouchableOpacity>
+  ), [navigation]); 
+  
   if (loading && currentPage === 1) {
     return (
       <View style={styles.loaderContainer}>
@@ -114,7 +119,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   itemName: {
-    fontSize: 18,
+    fontSize: 13,
     fontWeight: 'bold',
   },
   itemStatus: {

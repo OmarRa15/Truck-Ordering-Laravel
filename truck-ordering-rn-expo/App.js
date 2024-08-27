@@ -9,7 +9,8 @@ import AdminOrdersList from './screens/AdminDashboardScreen';
 import UserDashboard from './screens/UserDashboardScreen';
 import OrderCreate from './screens/OrderScreen';
 import OrdersListScreen from './screens/OrdersListScreen';
-import OrderDetailsScreen from './screens/OrderInfoScreen';
+import OrderDetailsAdmin from './screens/OrderDetailAdmin';
+import OrderDetailsUser from './screens/OrderDetailUser';
 
 const Stack = createStackNavigator();
 
@@ -27,8 +28,9 @@ function App() {
         <Stack.Screen name="UserDashboard" component={UserDashboard} options={{ headerShown: false}} />
         <Stack.Screen name="OrderCreate" component={OrderCreate} />
         <Stack.Screen name="OrdersListUser" component={OrdersListScreen} />
-        <Stack.Screen name="OrderDetails" component={OrderDetailsScreen} />
-        
+        <Stack.Screen name="OrderDetailsAdmin" component={OrderDetailsAdmin} />
+        <Stack.Screen name="OrderDetailsUser" component={OrderDetailsUser} />
+
 
       </Stack.Navigator>
     </NavigationContainer>

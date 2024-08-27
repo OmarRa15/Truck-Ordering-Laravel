@@ -69,7 +69,7 @@ const AdminOrdersList = ({navigation}) => {
   const renderOrder = useCallback(({ item: order }) => (
     <TouchableOpacity
       style={styles.itemContainer}
-      onPress={() => navigation.navigate('OrderDetails', { orderId: order.id })} // Pass orderId as route param
+      onPress={() => navigation.navigate('OrderDetailsAdmin', { orderId: order.id })} // Pass orderId as route param
     >
       <Text style={styles.itemName}>
         {order.user.name}, {order.pickup_location} {'==>'} {order.destination_location}
