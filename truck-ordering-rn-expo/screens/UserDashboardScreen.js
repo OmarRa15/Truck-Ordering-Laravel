@@ -1,21 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, Pressable,Button } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
 
 const UserDashboard = ({navigation}) => {
-    const logoutUser = async () => {
-        await AsyncStorage.removeItem('userToken');
-        // Redirect to Login
-        navigation.navigate('Login');
-    
-    };
-
+  
     return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Orders</Text>
-        <Button title="Logout" onPress={logoutUser} />
-      </View>
       
     <View style={styles.buttonGroup}>
     <View style={styles.buttonView}>
@@ -65,18 +54,6 @@ const styles = StyleSheet.create({
     color : "white"  ,
     fontSize: 18,
     fontWeight : "bold"
-  },
-  header: {
-    marginTop: 30,
-    height: 60,
-    backgroundColor: '#f8f9fa',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-    elevation: 2, // Adds shadow for Android
   },
   headerTitle: {
     fontSize: 20,

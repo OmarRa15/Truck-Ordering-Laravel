@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import LogoutButton from './screens/LogoutButton';
 
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
@@ -17,21 +18,34 @@ const Stack = createStackNavigator();
 
 function App() {
 
-
   return (
 
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="Login" screenOptions={{headerTitleStyle:{fontSize:15}}}>
 
-        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} options={{title:"Login"}}/>
         <Stack.Screen name="SignUp" component={SignUpScreen} />
-        <Stack.Screen name="AdminDashboard" component={AdminOrdersList} options={{ headerShown: false}} />
-        <Stack.Screen name="UserDashboard" component={UserDashboard} options={{ headerShown: false}} />
-        <Stack.Screen name="OrderCreate" component={OrderCreate} />
-        <Stack.Screen name="OrdersListUser" component={OrdersListScreen} />
-        <Stack.Screen name="OrderDetailsAdmin" component={OrderDetailsAdmin} />
-        <Stack.Screen name="OrderDetailsUser" component={OrderDetailsUser} />
-        <Stack.Screen name="Notifications" component={NotificationsScreen} />
+        <Stack.Screen name="AdminDashboard" component={AdminOrdersList} options={{ headerRight: () => (
+              <LogoutButton />
+              ), title:"Admin Dashboard"}} />
+        <Stack.Screen name="UserDashboard" component={UserDashboard} options={{ headerRight: () => (
+              <LogoutButton />
+              ), title:"Dashboard"}} />
+        <Stack.Screen name="OrderCreate" component={OrderCreate} options={{ headerRight: () => (
+              <LogoutButton />
+              ), title:"Create an Order"}}/>
+        <Stack.Screen name="OrdersListUser" component={OrdersListScreen} options={{ headerRight: () => (
+              <LogoutButton />
+              ),title:"Your Orders"}} />
+        <Stack.Screen name="OrderDetailsAdmin" component={OrderDetailsAdmin} options={{ headerRight: () => (
+              <LogoutButton />
+              ),title:"Order Detail"}} />
+        <Stack.Screen name="OrderDetailsUser" component={OrderDetailsUser} options={{ headerRight: () => (
+              <LogoutButton />
+              ),title:"Order Detail"}} />
+        <Stack.Screen name="Notifications" component={NotificationsScreen} options={{ headerRight: () => (
+              <LogoutButton />
+              ),}} />
 
 
       </Stack.Navigator>

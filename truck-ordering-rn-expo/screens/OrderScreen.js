@@ -92,7 +92,7 @@ const OrderCreate = ({navigation}) => {
         autoCapitalize='none' />
             
 
-            <Text style={styles.title}>Choose a Delivery type:</Text>
+            <Text style={styles.label}>Choose a Delivery type:</Text>
             <RadioButton.Group onValueChange={newValue => setDelivery_type(newValue)} value={delivery_type}>
                 <View style={styles.radioOption}>
                 <RadioButton value="fast" />
@@ -103,8 +103,7 @@ const OrderCreate = ({navigation}) => {
                 <Text style={styles.radioLabel}>Normal</Text>
                 </View>
             </RadioButton.Group>
-
-            <Button onPress={()=>{setShowDatePicker(true)}} title="Select Date" style={styles.secondary_button} />
+            <Button onPress={()=>{setShowDatePicker(true)}} title="Select Pickup Date" />
       <Text>Selected Date: {pickup_date.toDateString()}</Text>
 
       {showDatePicker && (
@@ -139,7 +138,7 @@ const styles = StyleSheet.create({
         width : 85
       },
       title : {
-        fontSize : 30,
+        fontSize : 22,
         fontWeight : "bold",
         textTransform : "uppercase",
         textAlign: "center",
@@ -198,6 +197,10 @@ const styles = StyleSheet.create({
       radioLabel: {
         fontSize: 16,
       },
+      label:{
+        fontSize: 20,
+        color: "red"
+      }
     });
 
 export default OrderCreate;

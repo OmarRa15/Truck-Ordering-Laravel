@@ -28,7 +28,7 @@ const SignUpScreen = ({ navigation }) => {
       }
   
       try {
-        const response = await axios.api('/register', {
+        const response = await api.post('/register', {
           email: email.trim(),
           password: password.trim(),
           password_confirmation: confirmPassword.trim(),
