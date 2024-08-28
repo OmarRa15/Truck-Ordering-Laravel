@@ -11,6 +11,7 @@ import OrderCreate from './screens/OrderScreen';
 import OrdersListScreen from './screens/OrdersListScreen';
 import OrderDetailsAdmin from './screens/OrderDetailAdmin';
 import OrderDetailsUser from './screens/OrderDetailUser';
+import NotificationsScreen from './screens/NotificationsScreen';
 
 const Stack = createStackNavigator();
 
@@ -30,6 +31,7 @@ function App() {
         <Stack.Screen name="OrdersListUser" component={OrdersListScreen} />
         <Stack.Screen name="OrderDetailsAdmin" component={OrderDetailsAdmin} />
         <Stack.Screen name="OrderDetailsUser" component={OrderDetailsUser} />
+        <Stack.Screen name="Notifications" component={NotificationsScreen} />
 
 
       </Stack.Navigator>

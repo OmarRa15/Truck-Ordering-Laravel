@@ -10,9 +10,7 @@ class NotificationController extends Controller
     {
         $notifications = $request->user()->notifications;
 
-        return response()->json([
-            'notifications' => $notifications
-        ]);
+        return response()->json($notifications);
     }
 
     // Mark all notifications as read

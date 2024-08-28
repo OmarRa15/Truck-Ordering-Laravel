@@ -21,11 +21,13 @@ class OrderObserver
      */
     public function updated(Order $order): void
     {
+        ///////    This feature is disabled for now    ///////
+
         // Check if the 'status' attribute was changed
-        if ($order->isDirty('status')) {
-            // Notify the user when the status of an order is changed
-            $order->user->notify(new StatusChangedNotification($order));
-        }
+        // if ($order->isDirty('status')) {
+        //     // Notify the user when the status of an order is changed
+        //     $order->user->notify(new StatusChangedNotification($order));
+        // } 
     }
 
     /**

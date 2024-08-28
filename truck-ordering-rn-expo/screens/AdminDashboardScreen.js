@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
 import api from '../api';
+import BottomNavBar from './BottomNavBar';
 
 const AdminOrdersList = ({navigation}) => {
   const [orders, setOrders] = useState([]);
@@ -99,8 +100,12 @@ const AdminOrdersList = ({navigation}) => {
         ListFooterComponent={isFetchingMore ? <ActivityIndicator size="large" color="#0000ff" /> : null}
         initialNumToRender={10}
         removeClippedSubviews={true}
+        contentContainerStyle={{ paddingBottom: 80, paddingTop:40}}  // Add padding to prevent content from being covered
+
       />
       {errorMessage && Alert.alert('Error', errorMessage)}
+      <BottomNavBar navigation={navigation} />
+
     </View>
   );
 };
@@ -111,7 +116,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f9f9f9',
-    padding: 16,
   },
   itemContainer: {
     backgroundColor: '#fff',
